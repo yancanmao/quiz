@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: http-server
+  labels:           # Add this labels block
+    app: http-server
+spec:
+  containers:
+  - name: http-server
+    image: yancanmao/app
+    ports:
+    - containerPort: 8080
+

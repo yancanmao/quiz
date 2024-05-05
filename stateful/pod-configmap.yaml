@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-config
+data:
+  hello.txt: "Hello World"
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: configmap-http-server
+  labels:
+    app: http-server
+spec:
+  containers:
+  - name: http-server
+    image: yancanmao/app-stateful
+    volumeMounts:
+    - mountPath: "/config"
+      name: config-volume
+  volumes:
+  - name: config-volume
+    configMap:
+      name: hello-config
