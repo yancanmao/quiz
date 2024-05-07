@@ -1,5 +1,34 @@
 ## Stateless Quiz for Summer School
 
+### Environment Setup
+
+1. Python 3.X
+2. Install [Docker](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+   ```
+    # Add Docker's official GPG key:
+    sudo apt-get update
+    sudo apt-get install ca-certificates curl
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+    # Add the repository to Apt sources:
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    sudo docker run hello-world
+    sudo usermod -aG docker ${USER}
+   ```
+3. Install [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+   ```
+  curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+  sudo install minikube-linux-amd64 /usr/local/bin/minikube && rm minikube-linux-amd64
+  minikube start
+  alias kubectl="minikube kubectl --"
+   ```
+
 ### Run as Host Machine Process
 
 1. Run HTTP Server: 
