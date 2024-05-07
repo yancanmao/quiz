@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-service
+spec:
+  type: ClusterIP  # Changed from NodePort to ClusterIP
+  ports:
+    - port: 8080
+      # nodePort is removed because it's not used with ClusterIP services
+  selector:
+    app: http-server
