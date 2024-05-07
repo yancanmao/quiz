@@ -48,12 +48,12 @@ python3 client.py localhost 8080 # or access from browser: localhost:8080
 There are two images to be built, i.e., `app` and `client` image. We first build two images and then run different methods to access them.
 
 
-1. Build and push App and Client Image to Dockerhub:
+1. Build and push Server and Client Image to Dockerhub:
 
 ```
 cd server/
-docker build -t ${user}/app .
-docker push ${user}/app
+docker build -t ${user}/server .
+docker push ${user}/server
 cd client/
 docker build -t ${user}/client .
 docker push ${user}/client
@@ -61,17 +61,17 @@ docker push ${user}/client
 
 
 
-2. Run containers with app image:
+2. Run Server Container:
 
 ```
-docker run --name app  --rm -d ${user}/app
+docker run --name server --rm -d ${user}/server
 ```
 
 
 3. Access HTTP Server inside the container:
 
 ```
-docker ps # To check the ${Container_ID}
+docker ps # To check the Server ${Container_ID}
 docker exec -i -t ${Container_ID} /bin/bash
 python3 client.py localhost 8080
 ```
@@ -80,16 +80,16 @@ python3 client.py localhost 8080
 
 ```
 docker run --name client  --rm -d ${user}/client
-docker ps # To check the ${Container_ID}
-docker inspect app # Check and get app ${App_Container_IP}
-docker exec -i -t ${Container_ID} /bin/bash
-python3 client.py ${App_Container_IP} 8080
+docker ps # To check the ${Client_Container_ID}
+docker inspect app # Check and get server ${Server_Container_IP}
+docker exec -i -t ${Client_Container_ID} /bin/bash
+python3 client.py ${Server_Container_IP} 8080
 ```
 
 5. Access HTTP Server externally:
 
 ```
-docker run --name app  --rm -d -p 8081:8080 ${user}/app
+docker run --name server  --rm -d -p 8081:8080 ${user}/server
 # Access from browser: localhost:8081
 ```
 
