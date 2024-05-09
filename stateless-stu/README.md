@@ -83,7 +83,6 @@ All Kubernetes YAML Files are in `kube-yaml`.
 ```
 kubectl apply -f server-pod.yaml
 kubectl apply -f proxy-pod.yaml
-
 ```
 
 2. Access HTTP Server inside container:
