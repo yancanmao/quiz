@@ -48,50 +48,31 @@ python3 client.py localhost 8080 # or access from browser: localhost:8080
 There are two images to be built, i.e., `app` and `client` image. We first build two images and then run different methods to access them.
 
 
-1. Build and push Server and Client Image to Dockerhub:
+1. Build and push Server, Proxy, and Client Images to Dockerhub:
 
 ```
 cd server/
-docker build -t ${user}/server .
-docker push ${user}/server
+docker build -t ${user}/quiz-server .
+docker push ${user}/quiz-server
+cd proxy/
+docker build -t ${user}/quiz-proxy .
+docker push ${user}/quiz-proxy
 cd client/
-docker build -t ${user}/client .
-docker push ${user}/client
+docker build -t ${user}/quiz-client .
+docker push ${user}/quiz-client
 ```
 
 
 
-2. Run Server Container:
+2. Run Server and Proxy Container:
 
 ```
-docker run --name server --rm -d ${user}/server
+docker run --name server --rm -d ${user}/quiz-server
+docker run --name proxy --rm -d -p 8881:8888 ${user}/quiz-proxy
+cd client/
+python3 client.py localhost 8881 ${Server_IP} 8080 "Hello world from proxy"
 ```
 
-
-3. Access HTTP Server inside the container:
-
-```
-docker ps # To check the Server ${Container_ID}
-docker exec -i -t ${Container_ID} /bin/bash
-python3 client.py localhost 8080
-```
-
-4. Access HTTP Server from another container:
-
-```
-docker run --name client  --rm -d ${user}/client
-docker ps # To check the ${Client_Container_ID}
-docker inspect app # Check and get server ${Server_Container_IP}
-docker exec -i -t ${Client_Container_ID} /bin/bash
-python3 client.py ${Server_Container_IP} 8080
-```
-
-5. Access HTTP Server externally:
-
-```
-docker run --name server  --rm -d -p 8081:8080 ${user}/server
-# Access from browser: localhost:8081
-```
 
 ### Run as Kubernetes Pods
 
@@ -101,6 +82,8 @@ All Kubernetes YAML Files are in `kube-yaml`.
 
 ```
 kubectl apply -f server-pod.yaml
+kubectl apply -f proxy-pod.yaml
+
 ```
 
 2. Access HTTP Server inside container:
@@ -108,29 +91,8 @@ kubectl apply -f server-pod.yaml
 ```
 kubectl exec -i -t http-server -- /bin/bash
 python3 client.py localhost 8080
-```
-
-3. Access HTTP Server from other pods:
-
-```
-kubectl describe pod http-server # Check description and get ${POD_IP}
-kubectl apply -f client-pod.yaml
-kubectl exec -i -t http-client -- /bin/bash
-python3 client.py ${POD_IP} 8080
-```
-
-4. Port-forward for external access:
-
-```
-kubectl port-forward --address 0.0.0.0 http-server 8081:8080
-# Access from browser: localhost:8081
-```
-
-5. Create ClusterIP service to access via Service Name inside container: 
-
-```
-kubectl apply -f service-clsuterip.yaml
-kubectl exec -i -t http-client -- /bin/bash
-python3 client.py http-service 8080
+kubectl port-forward --address 0.0.0.0 http-proxy 8881:8888
+cd client/
+python3 client.py localhost 8881 ${Server_IP} 8080 "Hello world from proxy"
 ```
 
