@@ -34,7 +34,7 @@ alias kubectl="minikube kubectl --"
 1. Run HTTP Server: 
 
 ```
-python3 app.py # run a server on port 8080
+python3 server.py # run a server on port 8080
 ```
 
 2. Access HTTP Server:
@@ -45,18 +45,18 @@ python3 client.py localhost 8080 # or access from browser: localhost:8080
 
 ### Run as Docker Container
 
-There are two images to be built, i.e., `app` and `client` image. We first build two images and then run different methods to access them.
+There are two images to be built, i.e., `server` and `client` image. We first build two images and then run different methods to access them.
 
 
 1. Build and push Server and Client Image to Dockerhub:
 
 ```
 cd server/
-docker build -t ${user}/server .
-docker push ${user}/server
+docker build -t ${user}/server-image .
+docker push ${user}/server-image
 cd client/
-docker build -t ${user}/client .
-docker push ${user}/client
+docker build -t ${user}/client-image .
+docker push ${user}/client-image
 ```
 
 
@@ -64,7 +64,7 @@ docker push ${user}/client
 2. Run Server Container:
 
 ```
-docker run --name server --rm -d ${user}/server
+docker run --name server --rm -d ${user}/server-image
 ```
 
 
@@ -79,9 +79,9 @@ python3 client.py localhost 8080
 4. Access HTTP Server from another container:
 
 ```
-docker run --name client  --rm -d ${user}/client
+docker run --name client  --rm -d ${user}/client-image
 docker ps # To check the ${Client_Container_ID}
-docker inspect app # Check and get server ${Server_Container_IP}
+docker inspect server # Check and get server ${Server_Container_IP}
 docker exec -i -t ${Client_Container_ID} /bin/bash
 python3 client.py ${Server_Container_IP} 8080
 ```
@@ -89,7 +89,7 @@ python3 client.py ${Server_Container_IP} 8080
 5. Access HTTP Server externally:
 
 ```
-docker run --name server  --rm -d -p 8081:8080 ${user}/server
+docker run --name server  --rm -d -p 8081:8080 ${user}/server-image
 # Access from browser: localhost:8081
 ```
 
