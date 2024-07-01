@@ -134,7 +134,15 @@ kubectl exec -i -t http-client -- /bin/bash
 python3 client.py http-service 8080
 ```
 
-6. Create ExternalService, access external service from Kubernetes Cluster:
+6. Create NodePort for external traffic:
+
+```
+kubectl apply -f service-nodeport.yaml
+curl -s $(minikube  ip):30000
+```
+
+
+7. Create ExternalService, access external service from Kubernetes Cluster:
 
 
 ```
