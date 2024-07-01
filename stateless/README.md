@@ -134,3 +134,11 @@ kubectl exec -i -t http-client -- /bin/bash
 python3 client.py http-service 8080
 ```
 
+6. Create ExternalService, access external service from Kubernetes Cluster:
+
+
+```
+python3 server.py # go to server/ folder and run
+kubectl apply -f service-externalname.yaml
+kubectl apply -f cliend-pod.yaml
+```
