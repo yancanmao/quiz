@@ -139,6 +139,8 @@ python3 client.py http-service 8080
 
 ```
 python3 server.py # go to server/ folder and run
-kubectl apply -f service-externalname.yaml
+kubectl apply -f service-externalname.yaml # deploy a ExternalService named externalname-service
 kubectl apply -f cliend-pod.yaml
+kubectl exec -i -t http-client -- /bin/bash
+python3 client.py externalname-service 8080
 ```
