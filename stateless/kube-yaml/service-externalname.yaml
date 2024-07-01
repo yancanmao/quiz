@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: externalname-service
+spec:
+  type: ExternalName
+  externalName: host.minikube.internal # default domain name supported by Minikube
+  ports:
+    - port: 8080
