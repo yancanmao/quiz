@@ -9,9 +9,14 @@ spec:
     - name: hello-storage
       persistentVolumeClaim:
         claimName: hello-pvc
+    - name: config-volume
+      configMap:
+          name: hello-config
   containers:
   - name: http-server
     image: yancanmao/app-stateful
     volumeMounts:
     - mountPath: "/data"
       name: hello-storage
+    - mountPath: "/config"
+      name: config-volume

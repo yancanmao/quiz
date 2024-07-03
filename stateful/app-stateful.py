@@ -8,6 +8,9 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             with open('/data/hello.txt', 'r') as file:
                 message = file.read()
         else:
+            # Write the client's message to hello.txt
+            with open('/data/hello.txt', 'w') as file:
+                file.write("Hello World")
             message = "File/Config Not Found"
         
         self.send_response(200)
