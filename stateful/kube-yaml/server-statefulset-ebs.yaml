@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ebs-statefulset
+spec:
+  serviceName: "ebs-service"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ebs-app
+  template:
+    metadata:
+      labels:
+        app: ebs-app
+    spec:
+      containers:
+      - name: ebs-container
+        image: yancanmao/app-stateful
+        volumeMounts:
+        - name: ebs-storage
+          mountPath: "/data"
+  volumeClaimTemplates:
+  - metadata:
+      name: ebs-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "ebs-sc"
+      resources:
+        requests:
+          storage: 1Gi
+
